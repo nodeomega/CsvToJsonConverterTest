@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using Newtonsoft.Json;
 
 namespace CsvToJsonConverterTest.Models
 {
@@ -23,6 +22,7 @@ namespace CsvToJsonConverterTest.Models
             Orders.Add(new CsvOrderLine(date, code, number));
         }
 
+        [JsonIgnore]
         public CsvOrderLine MostRecentOrder => Orders.LastOrDefault();
 
         public void AddEnder(string process, string paid, string created)

@@ -3,6 +3,7 @@ using System.IO;
 using CsvToJsonConverterTest.Models;
 using CsvToJsonConverterTest.Settings;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace CsvToJsonConverterTest
 {
@@ -70,13 +71,22 @@ namespace CsvToJsonConverterTest
                     }
                 }
 
+                // Ensure that the output directory exists.
                 if (!Directory.Exists("output"))
                 {
                     Directory.CreateDirectory("output");
                 }
-                Console.WriteLine(JsonConvert.SerializeObject(FileData));
 
-                File.WriteAllText(@"output\results.json", JsonConvert.SerializeObject(FileData));
+                var contractResolver = new DefaultContractResolver
+                {
+                    NamingStrategy = new CamelCaseNamingStrategy()
+                };
+
+                File.WriteAllText(@"output\results.json", JsonConvert.SerializeObject(FileData, new JsonSerializerSettings
+                {
+                    ContractResolver = contractResolver,
+                    Formatting = Formatting.Indented
+                }));
             }
         }
     }
